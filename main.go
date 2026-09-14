@@ -19,6 +19,7 @@ var upgrader = websocket.Upgrader{
 type Hub struct {
 	mu      sync.Mutex
 	clients map[*websocket.Conn]struct{}
+	verbose bool
 }
 
 func (h *Hub) add(conn *websocket.Conn) {
@@ -38,6 +39,10 @@ func (h *Hub) remove(conn *websocket.Conn) {
 func (h *Hub) broadcast(sender *websocket.Conn, message []byte) {
 	h.mu.Lock()
 	defer h.mu.Unlock()
+
+	if h.verbose {
+		log.Printf("broadcast: %s", message)
+	}
 
 	for client := range h.clients {
 		if client == sender {
@@ -82,10 +87,12 @@ func handler(hub *Hub) http.Handler {
 func main() {
 	host := flag.String("host", "localhost", "host to listen on")
 	port := flag.Int("port", 9994, "port to listen on")
+	verbose := flag.Bool("verbose", false, "print every message sent through the relay")
 	flag.Parse()
 
 	hub := &Hub{
 		clients: make(map[*websocket.Conn]struct{}),
+		verbose: *verbose,
 	}
 
 	addr := *host + ":" + strconv.Itoa(*port)
@@ -95,3 +102,4 @@ func main() {
 		log.Fatal(err)
 	}
 }
+
