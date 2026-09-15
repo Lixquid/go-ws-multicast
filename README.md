@@ -12,6 +12,8 @@ ws-multicast supports the following flags:
     - The host to listen to. To allow applications on other devices / servers to access the multicast server, set this to `0.0.0.0`.
 - `-post` (Defaults to `9994`)
     - The port to listen on.
+- `-verbose` (Defaults to `false`)
+    - Print every message sent through the relay.
 
 ## Development
 
