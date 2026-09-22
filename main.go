@@ -86,7 +86,7 @@ func handler(hub *Hub) http.Handler {
 
 func main() {
 	host := flag.String("host", "localhost", "host to listen on")
-	port := flag.Int("port", 9994, "port to listen on")
+	port := flag.Int("port", 9999, "port to listen on")
 	verbose := flag.Bool("verbose", false, "print every message sent through the relay")
 	flag.Parse()
 
